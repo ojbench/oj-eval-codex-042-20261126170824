@@ -42,7 +42,8 @@ int main() {
                 ring.put(key, value);
                 expected[key] = value;
             } else {
-                assert(ring.get(key) == expected[key]);
+                auto it = expected.find(key);
+                assert(ring.get(key) == (it == expected.end() ? 0 : it->second));
             }
         }
         std::size_t total = 0;

@@ -2,6 +2,7 @@
 #define SPEEDCIRCULARLIST_H
 
 #include <iostream>
+#include <algorithm>
 #include <map>
 #include <string>
 #include <vector>
@@ -25,6 +26,7 @@ public:
         int bound = 0;
         Node* next = nullptr;
         Node** fast_search_list = nullptr;
+        std::vector<std::pair<int, Node*>> search_index;
 
         Node(int bound, int fast_search_list_size) : bound(bound) {
             fast_search_list = new Node*[fast_search_list_size]();
@@ -47,6 +49,12 @@ private:
     }
 
     void BuildFastSearchList() {
+        if (head) {
+            head->search_index.reserve(list_size);
+            Node* cur = head;
+            for (int i = 0; i < list_size; ++i, cur = cur->next)
+                head->search_index.emplace_back(cur->bound, cur);
+        }
         for (int level = 0; level < fast_search_list_size; ++level) {
             Node* cur = head;
             for (int i = 0; i < list_size; ++i, cur = cur->next) {
@@ -58,16 +66,12 @@ private:
 
     Node* FindNode(int code) const {
         if (!head || code <= head->bound) return head;
-        Node* cur = head;
-        // Stop at the last bound strictly below code; reject wraparound jumps.
-        for (int level = fast_search_list_size - 1; level >= 0; --level) {
-            Node* candidate = cur->fast_search_list[level];
-            while (candidate->bound > cur->bound && candidate->bound < code) {
-                cur = candidate;
-                candidate = cur->fast_search_list[level];
-            }
-        }
-        return cur->next;
+        const auto& index = head->search_index;
+        auto it = std::lower_bound(index.begin(), index.end(), code,
+            [](const std::pair<int, Node*>& entry, int target) {
+                return entry.first < target;
+            });
+        return it->second;
     }
 
 public:
@@ -112,7 +116,8 @@ public:
         int code = GetHashCode(str);
         Node* node = FindNode(code);
         if (!node) return T();
-        return node->kv_map[str];
+        auto it = node->kv_map.find(str);
+        return it == node->kv_map.end() ? T() : it->second;
     }
 
     void print() {
