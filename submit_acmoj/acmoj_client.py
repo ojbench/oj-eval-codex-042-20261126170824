@@ -140,7 +140,9 @@ def main():
             print(f"Error: Failed to read code file: {e}")
             exit(1)
 
-        result = client.submit_code(args.problem_id, args.language, code_text)
+        if args.language != "git":
+            parser.error("This repository client supports --language git only")
+        result = client.submit_git(args.problem_id, code_text.strip())
 
     elif args.command == "status":
         result = client.get_submission_detail(args.submission_id)
