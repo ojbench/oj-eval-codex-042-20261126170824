@@ -105,7 +105,7 @@ public:
     void put(std::string str, T value) {
         int code = GetHashCode(str);
         Node* node = FindNode(code);
-        if (node) node->kv_map[str] = value;
+        if (node) node->kv_map.insert({str, value});
     }
 
     T get(std::string str) {

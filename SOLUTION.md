@@ -40,3 +40,11 @@ The submission client's missing source submission method was implemented.
 The live problem API accepts only `cpp`, so submission uses `solution.h`
 directly. The initial Git request was rejected with HTTP 400 and created no
 submission. The repository remains the versioned source of the solution.
+
+# Judge history
+
+- Submission 879468: 85/100. Tests 1-9 passed, including memory checks.
+  The speed test returned Wrong Answer in 269 ms, so time was not the issue.
+- Changed duplicate insertion to preserve the first value using `map::insert`.
+  The statement specifies insertion without specifying replacement; this
+  addresses a semantic ambiguity that the small tests did not distinguish.

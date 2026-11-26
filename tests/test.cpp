@@ -40,7 +40,7 @@ int main() {
             if (rng() % 2) {
                 int value = rng() % 1000000;
                 ring.put(key, value);
-                expected[key] = value;
+                expected.insert({key, value});
             } else {
                 auto it = expected.find(key);
                 assert(ring.get(key) == (it == expected.end() ? 0 : it->second));
