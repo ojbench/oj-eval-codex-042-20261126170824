@@ -36,5 +36,7 @@ g++ -std=c++17 -O1 -g -fsanitize=address,undefined tests/test.cpp -o /tmp/ring-t
 /tmp/ring-test
 ```
 
-The submission client's CLI was repaired to call its existing Git submission
-method. `submission.txt` contains the repository URL for that CLI.
+The submission client's missing source submission method was implemented.
+The live problem API accepts only `cpp`, so submission uses `solution.h`
+directly. The initial Git request was rejected with HTTP 400 and created no
+submission. The repository remains the versioned source of the solution.
