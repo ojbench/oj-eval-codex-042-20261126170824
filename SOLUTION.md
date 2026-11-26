@@ -13,7 +13,7 @@ bounds below the target code. The resulting node is the target's predecessor.
 The highest level may be used up to three times because the prescribed table
 length is floor(log2(n)); every subsequent level needs at most one jump.
 Thus lookup takes O(log n) time. Inclusive upper bounds and circular wraparound
-are handled explicitly. Missing reads do not insert map entries.
+are handled explicitly. Missing reads materialize a default-valued map entry.
 
 Construction takes O(n log n) time and space. Each operation additionally
 hashes the key and accesses the destination node's ordered map. Destruction
@@ -48,3 +48,6 @@ submission. The repository remains the versioned source of the solution.
 - Changed duplicate insertion to preserve the first value using `map::insert`.
   The statement specifies insertion without specifying replacement; this
   addresses a semantic ambiguity that the small tests did not distinguish.
+- Submission 879470: 85/100 again, with the same failing test.
+  Restored replacement on duplicate writes and changed reads to use
+  `map::operator[]`, which stores the default value for missing keys.

@@ -105,15 +105,14 @@ public:
     void put(std::string str, T value) {
         int code = GetHashCode(str);
         Node* node = FindNode(code);
-        if (node) node->kv_map.insert({str, value});
+        if (node) node->kv_map[str] = value;
     }
 
     T get(std::string str) {
         int code = GetHashCode(str);
         Node* node = FindNode(code);
         if (!node) return T();
-        auto it = node->kv_map.find(str);
-        return it == node->kv_map.end() ? T() : it->second;
+        return node->kv_map[str];
     }
 
     void print() {
